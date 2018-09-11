@@ -7,6 +7,8 @@ import com.example.himanshu.otherapp.RoomDB.LocationColumns;
 import com.example.himanshu.otherapp.RoomDB.Note;
 import com.example.himanshu.otherapp.RoomDB.NoteStore;
 import com.example.himanshu.otherapp.RoomDB.NotesDatabase;
+import com.example.himanshu.otherapp.RoomDB.Priority;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -42,13 +44,13 @@ public class NotesTest {
         for(String s : arr) tags.add(s);
         assertEquals(0,noteStore.selectAll().size());
         LocationColumns location =new LocationColumns(12.211,34.234);
-        final Note note= new Note("This is a Note","This is the details",tags,location);
+        final Note note= new Note("This is a Note","This is the details",tags,location, Priority.HIGH);
         assertNotNull(note.id);
         assertNotEquals(0,note.id.length());
         noteStore.insert(note);
         assertNote(noteStore,note);
 
-        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags, location);
+        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags, location,Priority.LOW);
         noteStore.update(note2);
 
         assertNote(noteStore,note2);

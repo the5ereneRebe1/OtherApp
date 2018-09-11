@@ -4,6 +4,7 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
@@ -20,11 +21,16 @@ public class Note {
     public String text;
     public Date date;
     public Set<String> tags;
-    @Embedded
+    @TypeConverters({Priority.class})
+    public Priority priority;
+    /*
+    If we have two embedded columns of the same type to avoid having multiple
+            latitude and longitude columns we optionally add the parameter prefix to the annotation.*/
+    @Embedded(prefix = "_notes")
     public LocationColumns location;
     @Ignore
-    public Note(String title, String text,Set<String> tags,LocationColumns location){
-        this(UUID.randomUUID().toString(),title,text,tags,location);
+    public Note(String title, String text,Set<String> tags,LocationColumns location,Priority priority){
+        this(UUID.randomUUID().toString(),title,text,tags,location,priority);
 
     }
 
@@ -36,13 +42,14 @@ public class Note {
         this.tags = tags;
     }
 
-    public Note(@NonNull String id, String title, String text, Set<String> tags, LocationColumns location) {
+    public Note(@NonNull String id, String title, String text, Set<String> tags, LocationColumns location, Priority priority) {
         this.id=id;
         this.title=title;
         this.text=text;
         date= Calendar.getInstance().getTime();
         this.tags=tags;
         this.location=location;
+        this.priority=priority;
     }
 
     public void setText(String text) {
