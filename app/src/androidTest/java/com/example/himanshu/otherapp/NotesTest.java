@@ -56,6 +56,7 @@ public class NotesTest {
         assertNotNull(result);
         assertEquals(1,result.size());
         assertTrue(areIdentical(note,result.get(0)));
+        assertEquals(note.getDate(),result.get(0).date);
     }
 
     private boolean areIdentical(Note note, Note note1) {

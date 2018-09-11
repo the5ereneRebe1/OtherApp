@@ -3,15 +3,18 @@ package com.example.himanshu.otherapp.RoomDB;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 @Database(entities = {Note.class},version = 1)
+@TypeConverters({DateConvertors.class})
 public abstract class NotesDatabase extends RoomDatabase {
 
     public abstract NoteStore noteStore();
 
     private static final String DB_NAME = "notes.db";
     private static volatile NotesDatabase INSTANCE=null;
+
 
     public synchronized static NotesDatabase get(Context context){
         if(INSTANCE==null){
