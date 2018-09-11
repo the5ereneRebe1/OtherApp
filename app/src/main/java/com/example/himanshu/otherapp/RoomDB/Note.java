@@ -1,5 +1,6 @@
 package com.example.himanshu.otherapp.RoomDB;
 
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -19,9 +20,11 @@ public class Note {
     public String text;
     public Date date;
     public Set<String> tags;
+    @Embedded
+    public LocationColumns location;
     @Ignore
-    public Note(String title, String text,Set<String> tags){
-        this(UUID.randomUUID().toString(),title,text,tags);
+    public Note(String title, String text,Set<String> tags,LocationColumns location){
+        this(UUID.randomUUID().toString(),title,text,tags,location);
 
     }
 
@@ -33,12 +36,13 @@ public class Note {
         this.tags = tags;
     }
 
-    public Note(@NonNull String id, String title, String text, Set<String> tags) {
+    public Note(@NonNull String id, String title, String text, Set<String> tags, LocationColumns location) {
         this.id=id;
         this.title=title;
         this.text=text;
         date= Calendar.getInstance().getTime();
         this.tags=tags;
+        this.location=location;
     }
 
     public void setText(String text) {

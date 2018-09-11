@@ -3,6 +3,7 @@ package com.example.himanshu.otherapp;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.himanshu.otherapp.RoomDB.LocationColumns;
 import com.example.himanshu.otherapp.RoomDB.Note;
 import com.example.himanshu.otherapp.RoomDB.NoteStore;
 import com.example.himanshu.otherapp.RoomDB.NotesDatabase;
@@ -40,13 +41,14 @@ public class NotesTest {
         HashSet<String> tags = new HashSet<>();
         for(String s : arr) tags.add(s);
         assertEquals(0,noteStore.selectAll().size());
-        final Note note= new Note("This is a Note","This is the details",tags);
+        LocationColumns location =new LocationColumns(12.211,34.234);
+        final Note note= new Note("This is a Note","This is the details",tags,location);
         assertNotNull(note.id);
         assertNotEquals(0,note.id.length());
         noteStore.insert(note);
         assertNote(noteStore,note);
 
-        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags);
+        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags, location);
         noteStore.update(note2);
 
         assertNote(noteStore,note2);
