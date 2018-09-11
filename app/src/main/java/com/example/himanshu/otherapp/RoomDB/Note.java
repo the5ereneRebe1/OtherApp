@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(tableName = "notes")
@@ -17,17 +18,27 @@ public class Note {
     public String title;
     public String text;
     public Date date;
+    public Set<String> tags;
     @Ignore
-    public Note(String title, String text){
-        this(UUID.randomUUID().toString(),title,text);
+    public Note(String title, String text,Set<String> tags){
+        this(UUID.randomUUID().toString(),title,text,tags);
 
     }
 
-    public Note(@NonNull String id, String title, String text) {
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
+    public Note(@NonNull String id, String title, String text, Set<String> tags) {
         this.id=id;
         this.title=title;
         this.text=text;
         date= Calendar.getInstance().getTime();
+        this.tags=tags;
     }
 
     public void setText(String text) {

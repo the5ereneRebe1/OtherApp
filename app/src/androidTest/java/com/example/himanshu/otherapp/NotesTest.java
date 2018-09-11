@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -35,14 +36,17 @@ public class NotesTest {
     }
     @Test
     public void check(){
+        String arr[] ={"important","private","@!wow,","blitz##"};
+        HashSet<String> tags = new HashSet<>();
+        for(String s : arr) tags.add(s);
         assertEquals(0,noteStore.selectAll().size());
-        final Note note= new Note("This is a Note","This is the details");
+        final Note note= new Note("This is a Note","This is the details",tags);
         assertNotNull(note.id);
         assertNotEquals(0,note.id.length());
         noteStore.insert(note);
         assertNote(noteStore,note);
 
-        final Note note2 = new Note(note.id,"This is note 2","This are updated details!");
+        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags);
         noteStore.update(note2);
 
         assertNote(noteStore,note2);
@@ -57,6 +61,7 @@ public class NotesTest {
         assertEquals(1,result.size());
         assertTrue(areIdentical(note,result.get(0)));
         assertEquals(note.getDate(),result.get(0).date);
+        assertEquals(note.getTags(),result.get(0).tags);
     }
 
     private boolean areIdentical(Note note, Note note1) {
