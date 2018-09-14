@@ -44,13 +44,14 @@ public class NotesTest {
         for(String s : arr) tags.add(s);
         assertEquals(0,noteStore.selectAll().size());
         LocationColumns location =new LocationColumns(12.211,34.234);
-        final Note note= new Note("This is a Note","This is the details",tags,location, Priority.HIGH);
+        String courseId="java_lang";
+        final Note note= new Note("This is a Note","This is the details",tags,location, Priority.HIGH, courseId);
         assertNotNull(note.id);
         assertNotEquals(0,note.id.length());
         noteStore.insert(note);
         assertNote(noteStore,note);
 
-        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags, location,Priority.LOW);
+        final Note note2 = new Note(note.id,"This is note 2","This are updated details!",tags, location,Priority.LOW, courseId);
         noteStore.update(note2);
 
         assertNote(noteStore,note2);

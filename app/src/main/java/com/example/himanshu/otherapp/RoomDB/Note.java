@@ -2,7 +2,9 @@ package com.example.himanshu.otherapp.RoomDB;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
@@ -12,25 +14,30 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(tableName = "notes")
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "notes",
+        foreignKeys = @ForeignKey(entity = Course.class,parentColumns = "id",childColumns = "courseId",onDelete = CASCADE),
+        indices = @Index("courseId"))
 public class Note {
     @PrimaryKey
     @NonNull
     public final String id;
-    public String title;
-    public String text;
-    public Date date;
-    public Set<String> tags;
+    public final String title;
+    public final String text;
+    public final Date date;
+    public final Set<String> tags;
     @TypeConverters({Priority.class})
-    public Priority priority;
+    public final Priority priority;
+    public final String courseId;
     /*
     If we have two embedded columns of the same type to avoid having multiple
             latitude and longitude columns we optionally add the parameter prefix to the annotation.*/
     @Embedded(prefix = "_notes")
     public LocationColumns location;
     @Ignore
-    public Note(String title, String text,Set<String> tags,LocationColumns location,Priority priority){
-        this(UUID.randomUUID().toString(),title,text,tags,location,priority);
+    public Note(String title, String text, Set<String> tags, LocationColumns location, Priority priority, String courseId){
+        this(UUID.randomUUID().toString(),title,text,tags,location,priority, courseId);
 
     }
 
@@ -38,23 +45,18 @@ public class Note {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
-    }
 
-    public Note(@NonNull String id, String title, String text, Set<String> tags, LocationColumns location, Priority priority) {
+    public Note(@NonNull String id, String title, String text, Set<String> tags, LocationColumns location, Priority priority, String courseId) {
         this.id=id;
         this.title=title;
         this.text=text;
+        this.courseId = courseId;
         date= Calendar.getInstance().getTime();
         this.tags=tags;
         this.location=location;
         this.priority=priority;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public String getText() {
         return text;
@@ -64,9 +66,6 @@ public class Note {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     @Override
     public String toString() {
@@ -77,7 +76,5 @@ public class Note {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+
 }

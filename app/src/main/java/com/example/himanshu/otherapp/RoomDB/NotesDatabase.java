@@ -15,7 +15,6 @@ public abstract class NotesDatabase extends RoomDatabase {
     private static final String DB_NAME = "notes.db";
     private static volatile NotesDatabase INSTANCE=null;
 
-
     public synchronized static NotesDatabase get(Context context){
         if(INSTANCE==null){
             INSTANCE=create(context,false);

@@ -21,4 +21,18 @@ public interface NoteStore {
     @Delete
     void delete(Note... notes);
 
+    //Courses
+    @Query("SELECT * FROM courses ORDER BY title")
+    List<Course> selectAllCourses();
+    @Query("SELECT * FROM notes WHERE courseId=:courseId")
+    Note getNotesOfCourse(String courseId);
+    @Insert
+    void insert(Course... courses);
+    @Update
+    void update(Course... courses);
+    @Delete
+    void delete(Course... courses);
+
+
+
 }
