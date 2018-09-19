@@ -25,7 +25,7 @@ public class Note {
     public final String id;
     public final String title;
     public final String text;
-    public final Date date;
+    public  Date date;
     public final Set<String> tags;
     @TypeConverters({Priority.class})
     public final Priority priority;
